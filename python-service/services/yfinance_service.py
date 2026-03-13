@@ -1,8 +1,26 @@
+"""
+Unified stock data: tries nsetools first (NSE, no rate limits like Yahoo),
+falls back to yfinance for BSE or when nsetools fails.
+"""
 import yfinance as yf
+
+from services.nsetools_service import get_stock_data as nse_get_stock_data
 
 
 def get_stock_data(symbol: str) -> dict:
-    """symbol format: 'HDFCBANK.NS' for NSE, 'HDFCBANK.BO' for BSE"""
+    """
+    symbol format: 'HDFCBANK.NS' for NSE, 'HDFCBANK.BO' for BSE.
+    NSE symbols: try nsetools first (avoids Yahoo 429), fallback to yfinance.
+    """
+    is_nse = symbol.endswith(".NS") or (".NS" not in symbol and ".BO" not in symbol)
+
+    if is_nse:
+        try:
+            return nse_get_stock_data(symbol)
+        except Exception:
+            pass  # Fall through to yfinance
+
+    # BSE or nsetools failed: use yfinance
     ticker = yf.Ticker(symbol)
     info = ticker.info
     hist = ticker.history(period="30d")
