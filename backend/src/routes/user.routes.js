@@ -55,27 +55,46 @@ router.put('/profile', async (req, res) => {
     const { goal, goal_amount, time_horizon_years, risk_tolerance, monthly_investment, existing_investments } =
       req.body;
 
+    const profileResult = await query(
+      `SELECT id FROM risk_profiles WHERE user_id = $1 ORDER BY updated_at DESC LIMIT 1`,
+      [req.user.id]
+    );
+
+    if (profileResult.rows.length === 0) {
+      return res.status(404).json({ error: 'No profile to update' });
+    }
+
     await query(
       `UPDATE risk_profiles SET
-        goal = COALESCE($2, goal),
-        goal_amount = COALESCE($3, goal_amount),
-        time_horizon_years = COALESCE($4, time_horizon_years),
-        risk_tolerance = COALESCE($5, risk_tolerance),
-        monthly_investment = COALESCE($6, monthly_investment),
-        existing_investments = COALESCE($7, existing_investments),
+        goal = COALESCE(NULLIF($2, ''), goal),
+        goal_amount = $3,
+        time_horizon_years = $4,
+        risk_tolerance = COALESCE(NULLIF($5, ''), risk_tolerance),
+        monthly_investment = $6,
+        existing_investments = NULLIF($7, ''),
         updated_at = NOW()
        WHERE user_id = $1`,
       [
         req.user.id,
-        goal,
-        goal_amount,
-        time_horizon_years,
-        risk_tolerance,
-        monthly_investment,
-        existing_investments,
+        goal ?? '',
+        goal_amount ?? null,
+        time_horizon_years ?? null,
+        risk_tolerance ?? 'moderate',
+        monthly_investment ?? null,
+        existing_investments ?? '',
       ]
     );
 
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.delete('/profile', async (req, res) => {
+  try {
+    await query(`DELETE FROM recommendations WHERE user_id = $1`, [req.user.id]);
+    await query(`DELETE FROM risk_profiles WHERE user_id = $1`, [req.user.id]);
     res.json({ success: true });
   } catch (err) {
     res.status(500).json({ error: err.message });

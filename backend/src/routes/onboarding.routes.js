@@ -59,10 +59,13 @@ When you have enough info, output <PROFILE_EXTRACTED>{...}</PROFILE_EXTRACTED>`;
       } catch (_) {}
     }
 
+    // Strip the raw XML block from the reply so user doesn't see it in chat
+    const replyForUser = reply.replace(/<PROFILE_EXTRACTED>[\s\S]*?<\/PROFILE_EXTRACTED>/g, '').trim();
+
     const is_complete = !!extracted_profile;
 
     res.json({
-      reply,
+      reply: replyForUser,
       extracted_profile,
       is_complete,
       session_id: sessionId,

@@ -1,7 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { query } from '../config/db.js';
 import { getActivePrompt, clearPromptCache } from '../services/promptService.js';
-import { calculateCost } from '../../../shared/claudePricing.js';
+import { calculateCost } from '../../shared/claudePricing.js';
 import rateLimit from 'express-rate-limit';
 
 const testLimiter = rateLimit({ windowMs: 60 * 60 * 1000, max: 20 });

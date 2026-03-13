@@ -6,6 +6,7 @@ import * as promptsController from '../controllers/admin.prompts.controller.js';
 import * as analyticsController from '../controllers/admin.analytics.controller.js';
 import * as usersController from '../controllers/admin.users.controller.js';
 import * as healthController from '../controllers/admin.health.controller.js';
+import * as copilotQuestionsController from '../controllers/admin.copilotQuestions.controller.js';
 
 const router = Router();
 
@@ -51,5 +52,9 @@ router.post('/users/:id/unsuspend', usersController.unsuspend);
 
 // Health
 router.get('/health', healthController.status);
+
+// Co-Pilot Quick Questions (Q&A for suggested prompts)
+router.get('/copilot-questions', copilotQuestionsController.list);
+router.put('/copilot-questions/:id', copilotQuestionsController.update);
 
 export default router;

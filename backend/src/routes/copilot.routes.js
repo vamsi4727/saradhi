@@ -9,6 +9,17 @@ import { fetchStock, fetchSentiment } from '../services/pythonBridge.js';
 const router = Router();
 router.use(requireAuth);
 
+router.get('/quick-questions', async (req, res) => {
+  try {
+    const result = await query(
+      `SELECT id, question, sort_order FROM copilot_quick_questions ORDER BY sort_order ASC`
+    );
+    res.json({ questions: result.rows.map((r) => r.question) });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 router.post('/query', checkFreemiumLimit('copilot_query'), async (req, res) => {
   try {
     const { message, session_id } = req.body;
@@ -24,6 +35,15 @@ router.post('/query', checkFreemiumLimit('copilot_query'), async (req, res) => {
         [req.user.id]
       );
       sessionId = insertResult.rows[0].id;
+    }
+
+    // Check for hardcoded answer (user selected a suggested question)
+    const quickMatch = await query(
+      `SELECT answer FROM copilot_quick_questions WHERE TRIM(question) = TRIM($1) LIMIT 1`,
+      [message]
+    );
+    if (quickMatch.rows.length > 0) {
+      return res.json({ reply: quickMatch.rows[0].answer, session_id: sessionId });
     }
 
     const profileResult = await query(

@@ -1,6 +1,6 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { query } from '../config/db.js';
-import { calculateCost } from '../../../shared/claudePricing.js';
+import { calculateCost } from '../../shared/claudePricing.js';
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 const model = process.env.CLAUDE_MODEL || 'claude-sonnet-4-6';
