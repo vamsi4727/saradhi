@@ -1,0 +1,22 @@
+{
+  "name": "saradhi",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI-Powered Financial Co-Pilot for the Indian Market",
+  "workspaces": [
+    "frontend",
+    "backend",
+    "shared"
+  ],
+  "scripts": {
+    "dev:frontend": "npm run dev -w frontend",
+    "dev:backend": "npm run dev -w backend",
+    "dev:python": "cd python-service && uvicorn main:app --reload --port 8000",
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\" \"npm run dev:python\"",
+    "build:frontend": "npm run build -w frontend",
+    "build:backend": "npm run build -w backend"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
