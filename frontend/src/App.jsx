@@ -9,6 +9,7 @@ import CoPilot from './pages/CoPilot';
 import Profile from './pages/Profile';
 import Subscription from './pages/Subscription';
 import Settings from './pages/Settings';
+import InvestNow from './pages/InvestNow';
 import DisclaimerBanner from './components/common/DisclaimerBanner';
 
 function ProtectedRoute({ children }) {
@@ -86,6 +87,16 @@ export default function App() {
             <ProtectedRoute>
               <Layout>
                 <Settings />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/invest"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <InvestNow />
               </Layout>
             </ProtectedRoute>
           }

@@ -4,22 +4,16 @@ import { copilotService } from '../services/copilotService';
 import ChatBubble from '../components/onboarding/ChatBubble';
 import ChatInput from '../components/onboarding/ChatInput';
 
-const QUICK_PROMPTS = [
-  "Summarize Tata Motors' latest earnings",
-  'Compare HDFC Bank vs ICICI Bank for 5 years',
-  'Best SIP options for ₹5,000/month?',
-  'Is Nifty 50 overvalued right now?',
-  'Explain P/E ratio in simple terms',
-];
-
 export default function CoPilot() {
   const [messages, setMessages] = useState([]);
   const [sessionId, setSessionId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [usage, setUsage] = useState({ used: 0, limit: 5 });
+  const [quickPrompts, setQuickPrompts] = useState([]);
 
   useEffect(() => {
     copilotService.getUsage().then(setUsage).catch(() => {});
+    copilotService.getQuickQuestions().then(setQuickPrompts).catch(() => {});
   }, []);
 
   const handleSend = async (message) => {
@@ -60,7 +54,7 @@ export default function CoPilot() {
         <div className="space-y-3">
           <p className="font-sans text-sm text-gray-600">Try asking:</p>
           <div className="flex flex-wrap gap-2">
-            {QUICK_PROMPTS.map((q) => (
+            {quickPrompts.map((q) => (
               <button
                 key={q}
                 onClick={() => handleQuickPrompt(q)}

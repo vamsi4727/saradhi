@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import Sparkline from './Sparkline';
 
 export default function RecommendationCard({ recommendation }) {
@@ -43,13 +44,16 @@ export default function RecommendationCard({ recommendation }) {
 
       {rationale && (
         <p className="font-sans text-sm text-gray-600 mt-3 leading-relaxed">
-          🤖 {rationale}
+          {rationale}
         </p>
       )}
 
-      <button className="w-full mt-4 bg-saffron-500 hover:bg-saffron-600 text-white font-sans font-semibold py-3.5 rounded-xl transition-colors duration-150">
+      <Link
+        to="/invest"
+        className="block w-full mt-4 bg-saffron-500 hover:bg-saffron-600 text-white font-sans font-semibold py-3.5 rounded-xl transition-colors duration-150 text-center"
+      >
         Invest Now →
-      </button>
+      </Link>
     </div>
   );
 }

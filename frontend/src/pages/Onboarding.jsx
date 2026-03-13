@@ -12,6 +12,8 @@ export default function Onboarding() {
   const [extractedProfile, setExtractedProfile] = useState(null);
   const [consented, setConsented] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(false);
 
   useEffect(() => {
     if (messages.length === 0) {
@@ -60,13 +62,17 @@ export default function Onboarding() {
   };
 
   const handleConfirm = async () => {
-    if (!consented || !extractedProfile) return;
+    if (!consented || !extractedProfile || saving) return;
 
+    setSaving(true);
+    setSaveSuccess(false);
     try {
       await api.post('/api/user/profile', extractedProfile);
-      navigate('/dashboard');
+      setSaveSuccess(true);
+      setTimeout(() => navigate('/dashboard'), 1200);
     } catch (err) {
       console.error(err);
+      setSaving(false);
     }
   };
 
@@ -101,12 +107,20 @@ export default function Onboarding() {
       )}
 
       {extractedProfile && consented && (
-        <button
-          onClick={handleConfirm}
-          className="w-full bg-saffron-500 hover:bg-saffron-600 text-white font-sans font-semibold py-3.5 rounded-xl transition-colors duration-150"
-        >
-          Save & Continue →
-        </button>
+        <div className="space-y-2">
+          {saveSuccess && (
+            <p className="text-green-600 text-sm font-medium text-center">
+              ✓ Profile saved successfully! Taking you to your dashboard...
+            </p>
+          )}
+          <button
+            onClick={handleConfirm}
+            disabled={saving}
+            className="w-full bg-saffron-500 hover:bg-saffron-600 disabled:opacity-70 disabled:cursor-not-allowed text-white font-sans font-semibold py-3.5 rounded-xl transition-colors duration-150"
+          >
+            {saving ? (saveSuccess ? 'Saved!' : 'Saving...') : 'Save & Continue →'}
+          </button>
+        </div>
       )}
 
       {!extractedProfile && (

@@ -11,7 +11,7 @@ export const authService = {
   },
 
   getGoogleLoginUrl: () => {
-    const base = import.meta.env.VITE_API_BASE_URL || window.location.origin;
+    const base = (import.meta.env.VITE_API_BASE_URL || window.location.origin).replace(/\/+$/, '');
     return `${base}/api/auth/google`;
   },
 };

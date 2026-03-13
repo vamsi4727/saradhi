@@ -5,6 +5,7 @@ import {
   FileText,
   Coins,
   MessageSquare,
+  MessageSquareQuestion,
   Users,
   Activity,
   Shield,
@@ -13,6 +14,7 @@ import {
 const navItems = [
   { to: '/', label: 'Overview', Icon: LayoutDashboard },
   { to: '/prompts', label: 'Prompt Studio', Icon: PenSquare },
+  { to: '/copilot-questions', label: 'Co-Pilot Q&A', Icon: MessageSquareQuestion },
   { to: '/logs', label: 'Query Logs', Icon: FileText },
   { to: '/analytics/tokens', label: 'Token Analytics', Icon: Coins },
   { to: '/analytics/conversations', label: 'Conversation Analytics', Icon: MessageSquare },

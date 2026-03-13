@@ -10,6 +10,7 @@ import TokenAnalytics from './pages/TokenAnalytics';
 import ConversationAnalytics from './pages/ConversationAnalytics';
 import UserManagement from './pages/UserManagement';
 import SystemHealth from './pages/SystemHealth';
+import CopilotQuestions from './pages/CopilotQuestions';
 
 function ProtectedRoute({ children }) {
   const { authenticated, loading, checkAuth } = useAdminAuthStore();
@@ -52,6 +53,7 @@ export default function App() {
         <Route path="analytics/conversations" element={<ConversationAnalytics />} />
         <Route path="users" element={<UserManagement />} />
         <Route path="health" element={<SystemHealth />} />
+        <Route path="copilot-questions" element={<CopilotQuestions />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
