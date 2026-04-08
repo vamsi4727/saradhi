@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { adminApi } from '../services/adminApi';
-import { MessageSquareQuestion } from 'lucide-react';
+import { MessageCircleQuestion } from 'lucide-react';
 
 export default function CopilotQuestions() {
   const [questions, setQuestions] = useState([]);
@@ -57,7 +57,7 @@ export default function CopilotQuestions() {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-2">
-        <MessageSquareQuestion className="w-6 h-6 text-admin-accent" />
+        <MessageCircleQuestion className="w-6 h-6 text-admin-accent" />
         <h1 className="text-xl font-bold font-mono">Co-Pilot Quick Questions</h1>
       </div>
       <p className="text-admin-muted text-sm">
