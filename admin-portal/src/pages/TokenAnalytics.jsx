@@ -15,15 +15,16 @@ import { format, parseISO } from 'date-fns';
 import { adminApi } from '../services/adminApi';
 
 const PERIODS = [
-  { value: '7d', label: 'Last 7 days' },
-  { value: '30d', label: 'Last 30 days' },
+  { value: 'all', label: 'All time' },
   { value: 'this_month', label: 'This month' },
+  { value: '30d', label: 'Last 30 days' },
+  { value: '7d', label: 'Last 7 days' },
 ];
 
 const COLORS = ['#3b82f6', '#22c55e', '#eab308', '#ef4444', '#8b5cf6'];
 
 export default function TokenAnalytics() {
-  const [period, setPeriod] = useState('this_month');
+  const [period, setPeriod] = useState('all');
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 

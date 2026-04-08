@@ -12,7 +12,9 @@ export async function tokens(req, res) {
     const { period = 'this_month' } = req.query;
 
     let dateFilter = "created_at >= date_trunc('month', CURRENT_DATE)";
-    if (period === '7d') {
+    if (period === 'all') {
+      dateFilter = '1=1';
+    } else if (period === '7d') {
       dateFilter = "created_at >= CURRENT_DATE - INTERVAL '7 days'";
     } else if (period === '30d') {
       dateFilter = "created_at >= CURRENT_DATE - INTERVAL '30 days'";

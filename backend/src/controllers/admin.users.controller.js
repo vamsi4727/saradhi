@@ -35,8 +35,8 @@ export async function list(req, res) {
     params.push(Number(limit), offset);
     const result = await query(
       `SELECT u.id, u.email, u.plan, u.created_at,
-        (SELECT COUNT(*) FROM query_logs ql WHERE ql.user_id = u.id AND ql.created_at >= date_trunc('month', CURRENT_DATE)) as queries_this_month,
-        (SELECT COALESCE(SUM(cost_inr), 0) FROM query_logs ql WHERE ql.user_id = u.id AND ql.created_at >= date_trunc('month', CURRENT_DATE)) as cost_this_month
+        (SELECT COUNT(*) FROM query_logs ql WHERE ql.user_id = u.id) as queries_total,
+        (SELECT COALESCE(SUM(cost_inr), 0) FROM query_logs ql WHERE ql.user_id = u.id) as cost_total
        FROM users u
        WHERE ${whereClause}
        ORDER BY u.created_at DESC
@@ -50,8 +50,8 @@ export async function list(req, res) {
       email: r.email,
       plan: r.plan,
       created_at: r.created_at,
-      queries_this_month: parseInt(r.queries_this_month, 10) || 0,
-      cost_this_month: parseFloat(r.cost_this_month) || 0,
+      queries_total: parseInt(r.queries_total, 10) || 0,
+      cost_total: parseFloat(r.cost_total) || 0,
     }));
 
     const pages = Math.ceil(total / Number(limit)) || 1;

@@ -104,8 +104,8 @@ export default function UserManagement() {
                     <th className="text-left py-3 px-4 text-admin-muted text-sm font-medium">User</th>
                     <th className="text-left py-3 px-4 text-admin-muted text-sm font-medium">Plan</th>
                     <th className="text-left py-3 px-4 text-admin-muted text-sm font-medium">Joined</th>
-                    <th className="text-left py-3 px-4 text-admin-muted text-sm font-medium">Queries</th>
-                    <th className="text-left py-3 px-4 text-admin-muted text-sm font-medium">Cost</th>
+                    <th className="text-left py-3 px-4 text-admin-muted text-sm font-medium">Queries (all)</th>
+                    <th className="text-left py-3 px-4 text-admin-muted text-sm font-medium">Cost (all)</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -124,9 +124,9 @@ export default function UserManagement() {
                       <td className="py-3 px-4 text-sm">
                         {u.created_at ? format(new Date(u.created_at), 'd MMM') : '—'}
                       </td>
-                      <td className="py-3 px-4">{u.queries_this_month ?? 0}</td>
+                      <td className="py-3 px-4">{u.queries_total ?? 0}</td>
                       <td className="py-3 px-4 font-mono text-sm">
-                        ₹{(u.cost_this_month ?? 0).toFixed(2)}
+                        ₹{(u.cost_total ?? 0).toFixed(2)}
                       </td>
                     </tr>
                   ))}
