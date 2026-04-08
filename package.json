@@ -6,7 +6,8 @@
   "workspaces": [
     "frontend",
     "backend",
-    "shared"
+    "shared",
+    "admin-portal"
   ],
   "scripts": {
     "dev:frontend": "npm run dev -w frontend",
