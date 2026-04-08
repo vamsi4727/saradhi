@@ -38,7 +38,7 @@ It is **not** a trading terminal. It is an intelligence layer that:
 **Legal posture:** Educational/research platform with prominent disclaimers (not SEBI RIA — to be obtained post-traction)  
 **Monetization:** Freemium from day one  
 **Domain:** `saradhi.katakam.in`  
-**Admin portal:** `saradhi-admin.katakam.in` — see `saaradhi_admin_spec.md`
+**Admin portal:** `admin.saradhi.katakam.in` — see `saaradhi_admin_spec.md`
 
 ---
 
@@ -68,7 +68,7 @@ It is **not** a trading terminal. It is an intelligence layer that:
 
 **NeonDB not Supabase:** You already run Postgres on NeonDB. Every schema in this doc is standard SQL — runs identically on Neon. We use `pg` (node-postgres) directly in Node.js. No migration needed.
 
-**Two Vercel projects:** Vercel free tier supports unlimited projects. `frontend/` → Project 1 at `saradhi.katakam.in`. `admin-portal/` → Project 2 at `saradhi-admin.katakam.in`. Both point to the same monorepo, different root directories.
+**Two Vercel projects:** Vercel free tier supports unlimited projects. `frontend/` → Project 1 at `saradhi.katakam.in`. `admin-portal/` → Project 2 at `admin.saradhi.katakam.in`. Both point to the same monorepo, different root directories.
 
 **One backend for both:** Admin API routes (`/admin/api/*`) live in the same Node.js Express app as the user-facing routes. Separated by middleware, not by service.
 
@@ -174,7 +174,7 @@ saradhi/
 │   ├── tailwind.config.js
 │   └── package.json
 │
-├── admin-portal/                    ← Vercel Project 2 → saradhi-admin.katakam.in
+├── admin-portal/                    ← Vercel Project 2 → admin.saradhi.katakam.in
 │   │                                   See saaradhi_admin_spec.md for full detail
 │   ├── src/
 │   │   ├── pages/
@@ -295,7 +295,7 @@ FRONTEND_URL=https://saradhi.katakam.in
 # Admin — simple password auth (see admin spec)
 ADMIN_PASSWORD=choose_a_strong_password
 ADMIN_SESSION_SECRET=another_long_random_string
-ADMIN_PORTAL_URL=https://saradhi-admin.katakam.in
+ADMIN_PORTAL_URL=https://admin.saradhi.katakam.in
 ```
 
 ### admin-portal/.env.local
@@ -1345,7 +1345,7 @@ python-dotenv==1.0.1
 
 ```
 saradhi.katakam.in          → Vercel Project 1 (frontend/)
-saradhi-admin.katakam.in    → Vercel Project 2 (admin-portal/)
+admin.saradhi.katakam.in    → Vercel Project 2 (admin-portal/)
 api.saradhi.katakam.in      → Railway (backend/)
                                   └── /admin/api/* routes included here
 python.saradhi.katakam.in   → Railway (python-service/) [internal only]
@@ -1357,7 +1357,7 @@ Database                    → Your existing NeonDB instance
 2. Import same Git repo
 3. Set Root Directory to `admin-portal/`
 4. Add env variables
-5. Set custom domain to `saradhi-admin.katakam.in`
+5. Set custom domain to `admin.saradhi.katakam.in`
 That's it — Vercel handles the rest.
 
 **Estimated monthly infra cost:**

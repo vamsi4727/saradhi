@@ -38,4 +38,4 @@ Ensure backend `.env` has:
 
 - `ADMIN_PASSWORD_HASH` — bcrypt hash of password
 - `ADMIN_SESSION_SECRET` — random string for session signing
-- `ADMIN_PORTAL_URL` — http://localhost:5174 (dev) or https://saradhi-admin.katakam.in (prod)
+- `ADMIN_PORTAL_URL` — http://localhost:5174 (dev) or https://admin.saradhi.katakam.in (prod)

@@ -56,22 +56,51 @@ npm run dev:frontend # Terminal 3: Vite on :2718
 
 ```
 saradhi/
-├── frontend/       → React + Vite → saradhi.katakam.in (Vercel)
-├── backend/        → Node.js Express → api.saradhi.katakam.in (Render)
-├── python-service/ → FastAPI + yfinance (internal)
-├── admin-portal/   → Admin dashboard (saradhi-admin.katakam.in)
+├── frontend/       → React + Vite (local :2718)
+├── backend/        → Node.js Express (local :6626)
+├── python-service/ → FastAPI + yfinance (local :8000)
+├── admin-portal/   → Admin dashboard
 ├── shared/         → Shared constants
 └── db/             → Schema + seed scripts
 ```
 
-## Deployment (saradhi.katakam.in)
+## Production deployment (reference)
 
-- **Frontend:** Vercel → `saradhi.katakam.in`
-- **Backend:** Render.com → `api.saradhi.katakam.in`
+Use this section when you return to the project after a break. **DNS** for `katakam.in` is managed in **Cloudflare**.
 
-Before deploying, update `.env` for production:
-- `CALLBACK_URL` → `https://api.saradhi.katakam.in/api/auth/google/callback`
-- `FRONTEND_URL` → `https://saradhi.katakam.in`
+| Piece | Platform | Public URL / notes |
+|--------|-----------|-------------------|
+| Web app | **Vercel** | `https://saradhi.katakam.in` (custom domain on Vercel) |
+| REST API (Node/Express) | **Koyeb** | `https://api.saradhi.katakam.in` (custom domain on Koyeb; CNAME in Cloudflare) |
+| Python service | **Koyeb** | Same Koyeb **app** as the API, separate **service** (e.g. `saradhi-python`); often not public—called by the Node backend |
+| Admin portal | **Vercel** (2nd project) | `https://admin.saradhi.katakam.in` — see Cloudflare steps below |
+
+Koyeb also assigns a default `*.koyeb.app` URL per app/service; keep that URL in **Google OAuth** redirect URIs if you still use it for debugging.
+
+**Step-by-step Koyeb env vars, `VITE_API_BASE_URL`, and custom domain DNS:** see [`docs/DEPLOYMENT_KOYEB.md`](docs/DEPLOYMENT_KOYEB.md).
+
+### Admin portal: `admin.saradhi.katakam.in` (Cloudflare + Vercel)
+
+Same pattern as `api.saradhi.katakam.in`, but the admin UI is static on **Vercel**, so DNS points to Vercel—not Koyeb.
+
+1. **Vercel** (admin project, root `admin-portal/`): **Settings → Domains →** add `admin.saradhi.katakam.in`. Copy the exact DNS targets Vercel shows (often a **CNAME** to `cname.vercel-dns.com`).
+
+2. **Cloudflare** (zone **`katakam.in`**):
+   - **Type:** CNAME  
+   - **Name:** `admin.saradhi` (this is the `admin.saradhi` label before `.katakam.in`)  
+   - **Target:** value from Vercel (e.g. `cname.vercel-dns.com`)  
+   - **Proxy:** **DNS only** (grey cloud) is the usual choice with Vercel so SSL and routing stay straightforward.
+
+3. **Koyeb (API):** set `ADMIN_PORTAL_URL=https://admin.saradhi.katakam.in` and redeploy/restart so CORS allows the admin origin.
+
+4. **Vercel (admin project) env:** `VITE_ADMIN_API_URL=https://api.saradhi.katakam.in/admin/api` (no trailing slash), then redeploy.
+
+**Production-oriented env (high level):**
+
+- **Vercel (main frontend):** `VITE_API_BASE_URL=https://api.saradhi.katakam.in` (no trailing slash)
+- **Vercel (admin portal):** `VITE_ADMIN_API_URL=https://api.saradhi.katakam.in/admin/api`
+- **Koyeb (backend):** `CALLBACK_URL=https://api.saradhi.katakam.in/api/auth/google/callback`, `FRONTEND_URL=https://saradhi.katakam.in`, `ADMIN_PORTAL_URL=https://admin.saradhi.katakam.in`, plus `DATABASE_URL`, OAuth secrets, `PYTHON_SERVICE_URL` (internal Koyeb URL if Python is private), etc.—mirror `backend/.env.example`
+- **Google Cloud Console:** Authorized redirect URI must include `https://api.saradhi.katakam.in/api/auth/google/callback` (and any `*.koyeb.app` callback URLs you still use)
 
 ## Pre-requisites (.env)
 

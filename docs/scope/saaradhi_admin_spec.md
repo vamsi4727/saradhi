@@ -1,6 +1,6 @@
 # Saaradhi — Admin Portal Specification
 > Internal operations dashboard for monitoring, prompt management, and analytics  
-> Domain: `saradhi-admin.katakam.in` | Auth: Simple password (single admin login)  
+> Domain: `admin.saradhi.katakam.in` | Auth: Simple password (single admin login)  
 > Companion doc: `saaradhi_main_spec.md` (Main Application)
 
 ---
@@ -23,7 +23,7 @@
 
 ## 1. Overview & Access
 
-The Saaradhi Admin Portal lives at `saradhi-admin.katakam.in` — a completely separate Vercel project from the main app. It shares the same Node.js backend (`api.saradhi.katakam.in`) but hits `/admin/api/*` routes protected by admin-only middleware.
+The Saaradhi Admin Portal lives at `admin.saradhi.katakam.in` — a completely separate Vercel project from the main app. It shares the same Node.js backend (`api.saradhi.katakam.in`) but hits `/admin/api/*` routes protected by admin-only middleware.
 
 ### What the admin portal does
 - **Prompt Studio** — edit every Claude prompt live without redeploying
@@ -39,7 +39,7 @@ The Saaradhi Admin Portal lives at `saradhi-admin.katakam.in` — a completely s
 You are the only operator right now. Complexity can be added later if needed.
 
 ```
-URL:      https://saradhi-admin.katakam.in
+URL:      https://admin.saradhi.katakam.in
 Password: set via ADMIN_PASSWORD_HASH env variable on Railway
 Session:  8-hour timeout, auto-expires
 ```
@@ -651,7 +651,7 @@ export default router;
 
 Practical precautions that are worth doing without overcomplicating:
 
-**1. CORS lock** — `/admin/api/*` only accepts requests from `saradhi-admin.katakam.in`.
+**1. CORS lock** — `/admin/api/*` only accepts requests from `admin.saradhi.katakam.in`.
 ```javascript
 app.use('/admin/api', cors({ origin: process.env.ADMIN_PORTAL_URL, credentials: true }));
 ```
@@ -700,7 +700,7 @@ npm install bcryptjs express-rate-limit
 # backend/.env — add to existing
 ADMIN_PASSWORD_HASH=generate_with_bcrypt_see_below
 ADMIN_SESSION_SECRET=long_random_string_different_from_SESSION_SECRET
-ADMIN_PORTAL_URL=https://saradhi-admin.katakam.in
+ADMIN_PORTAL_URL=https://admin.saradhi.katakam.in
 ```
 
 ```env
@@ -720,7 +720,7 @@ node -e "const b = require('bcryptjs'); console.log(b.hashSync('your_chosen_pass
 2. Import same Git repository as the main app
 3. Set **Root Directory** → `admin-portal/`
 4. Add env variables
-5. Set custom domain → `saradhi-admin.katakam.in`
+5. Set custom domain → `admin.saradhi.katakam.in`
 6. Deploy
 
 Completely independent from your main Vercel project. Same repo, different root directory.
@@ -751,5 +751,5 @@ Completely independent from your main Vercel project. Same repo, different root 
 
 ---
 
-*Version 2.0 | Domain: saradhi-admin.katakam.in | DB: NeonDB (same instance as main app)*  
+*Version 2.0 | Domain: admin.saradhi.katakam.in | DB: NeonDB (same instance as main app)*  
 *For main application spec, see: `saaradhi_main_spec.md`*

@@ -13,7 +13,7 @@ export default function AdminTopbar() {
   return (
     <header className="h-14 border-b border-admin-border flex items-center justify-between px-6 bg-admin-surface/50">
       <span className="text-admin-muted text-sm font-mono">
-        saradhi-admin.katakam.in
+        admin.saradhi.katakam.in
       </span>
       <button
         onClick={handleLogout}
